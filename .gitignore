@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+*.pyw
+.idea
+dist/
+build/
+django_filebrowser_no_grappelli.egg-info/
