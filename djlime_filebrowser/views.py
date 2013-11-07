@@ -1,8 +1,7 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 # general imports
-import os, re
-from time import gmtime, strftime
+import re
 
 # django imports
 from django.shortcuts import render_to_response, HttpResponse
@@ -11,27 +10,22 @@ from django.http import HttpResponseRedirect, Http404
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.cache import never_cache
 from django.utils.translation import ugettext as _
-from django.conf import settings
 from django import forms
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 from django.dispatch import Signal
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.encoding import smart_str
-
-try:
-    # django SVN
-    from django.views.decorators.csrf import csrf_exempt
-except:
-    # django 1.1
-    from django.contrib.csrf.middleware import csrf_exempt
-
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
 # djlime_filebrowser imports
 from djlime_filebrowser.settings import *
 from djlime_filebrowser.conf import fb_settings
-from djlime_filebrowser.functions import path_to_url, sort_by_attr, get_path, get_file, get_version_path, get_breadcrumbs, get_filterdate, get_settings_var, handle_file_upload, convert_filename
+from djlime_filebrowser.functions import (
+    path_to_url, sort_by_attr, get_path, get_file, get_version_path,
+    get_breadcrumbs, get_filterdate, get_settings_var, handle_file_upload,
+    convert_filename)
 from djlime_filebrowser.templatetags.fb_tags import query_helper
 from djlime_filebrowser.base import FileObject
 from djlime_filebrowser.decorators import flash_login_required
@@ -41,8 +35,9 @@ filter_re = []
 for exp in EXCLUDE:
    filter_re.append(re.compile(exp))
 for k,v in VERSIONS.iteritems():
-    exp = (r'_%s.(%s)') % (k, '|'.join(EXTENSION_LIST))
+    exp = r'_%s.(%s)' % (k, '|'.join(EXTENSION_LIST))
     filter_re.append(re.compile(exp))
+
 
 def _check_access(request, *path):
     """
@@ -55,6 +50,7 @@ def _check_access(request, *path):
         # cause any attempt to leave media root directory to fail
         raise Http404
     return abs_path
+
 
 def browse(request):
     """
@@ -168,6 +164,7 @@ browse = staff_member_required(never_cache(browse))
 filebrowser_pre_createdir = Signal(providing_args=["path", "dirname"])
 filebrowser_post_createdir = Signal(providing_args=["path", "dirname"])
 
+
 def mkdir(request):
     """
     Make Directory.
@@ -261,7 +258,7 @@ def _check_file(request):
     Check if file already exists on the server.
     """
 
-    from django.utils import simplejson
+    import simplejson
 
     folder = request.POST.get('folder')
     fb_uploadurl_re = re.compile(r'^.*(%s)' % reverse("fb_upload"))
@@ -319,6 +316,7 @@ def _upload_file(request):
 # delete signals
 filebrowser_pre_delete = Signal(providing_args=["path", "filename"])
 filebrowser_post_delete = Signal(providing_args=["path", "filename"])
+
 
 def delete(request):
     """
@@ -395,6 +393,7 @@ delete = staff_member_required(never_cache(delete))
 # rename signals
 filebrowser_pre_rename = Signal(providing_args=["path", "filename", "new_filename"])
 filebrowser_post_rename = Signal(providing_args=["path", "filename", "new_filename"])
+
 
 def rename(request):
     """

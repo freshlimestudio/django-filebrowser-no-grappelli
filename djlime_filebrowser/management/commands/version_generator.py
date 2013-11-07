@@ -1,5 +1,6 @@
 from django.core.management.base import NoArgsCommand
 
+
 class Command(NoArgsCommand):
     help = "(Re)Generate versions of Images"
 
@@ -11,9 +12,9 @@ class Command(NoArgsCommand):
         # Precompile regular expressions
         filter_re = []
         for exp in EXCLUDE:
-           filter_re.append(re.compile(exp))
-        for k,v in VERSIONS.iteritems():
-            exp = (r'_%s.(%s)') % (k, '|'.join(EXTENSION_LIST))
+            filter_re.append(re.compile(exp))
+        for k, v in VERSIONS.iteritems():
+            exp = r'_%s.(%s)' % (k, '|'.join(EXTENSION_LIST))
             filter_re.append(re.compile(exp))
 
         path = os.path.join(fb_settings.MEDIA_ROOT, fb_settings.DIRECTORY)

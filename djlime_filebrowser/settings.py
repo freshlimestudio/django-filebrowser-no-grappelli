@@ -43,24 +43,24 @@ PATH_TINYMCE = getattr(settings, "FILEBROWSER_PATH_TINYMCE", DEFAULT_PATH_TINYMC
 # Therefore, if you add a category (e.g. "Misc"), you won't get an icon.
 EXTENSIONS = getattr(settings, "FILEBROWSER_EXTENSIONS", {
     'Folder': [''],
-    'Image': ['.jpg','.jpeg','.gif','.png','.tif','.tiff'],
-    'Video': ['.mov','.wmv','.mpeg','.mpg','.avi','.rm'],
-    'Document': ['.pdf','.doc','.rtf','.txt','.xls','.csv'],
-    'Audio': ['.mp3','.mp4','.wav','.aiff','.midi','.m4p'],
-    'Code': ['.html','.py','.js','.css']
+    'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
+    'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
+    'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv'],
+    'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p'],
+    'Code': ['.html', '.py', '.js', '.css']
 })
 
 # Define different formats for allowed selections.
 # This has to be a subset of EXTENSIONS.
 SELECT_FORMATS = getattr(settings, "FILEBROWSER_SELECT_FORMATS", {
-    'File': ['Folder','Document',],
+    'File': ['Folder', 'Document', ],
     'Image': ['Image'],
-    'Media': ['Video','Sound'],
+    'Media': ['Video', 'Sound'],
     'Document': ['Document'],
     # for TinyMCE we can also define lower-case items
     'image': ['Image'],
-    'file': ['Folder','Image','Document',],
-    'media': ['Video','Sound'],
+    'file': ['Folder', 'Image', 'Document', ],
+    'media': ['Video', 'Sound'],
 })
 
 # Directory to Save Image Versions (and Thumbnails). Relative to MEDIA_ROOT.

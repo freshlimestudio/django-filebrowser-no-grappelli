@@ -6,8 +6,8 @@
 <!-- STYLESHEETS -->
 {% block extrastyle %}
     {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/changelists.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{{ settings_var.URL_FILEBROWSER_MEDIA }}css/filebrowser.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'djlime_filebrowser/css/filebrowser.css' %}" />
     {% if query.pop %}
     <style type="text/css">
         #header { display: none; }

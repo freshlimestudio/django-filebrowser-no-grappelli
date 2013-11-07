@@ -1,14 +1,11 @@
 # coding: utf-8
 
 # imports
-import os, re, decimal
-from time import gmtime, strftime, localtime, mktime, time
-from urlparse import urlparse
+import os
+import re
+from time import gmtime, strftime, localtime, time
 
 # django imports
-from django.utils.translation import ugettext as _
-from django.utils.safestring import mark_safe
-from django.core.files import File
 from django.core.files.storage import default_storage
 from django.utils.encoding import smart_str
 
@@ -34,7 +31,7 @@ def url_to_path(value):
     Returns a PATH relative to MEDIA_ROOT.
     """
 
-    mediaurl_re = re.compile(r'^(%s)' % (fb_settings.MEDIA_URL))
+    mediaurl_re = re.compile(r'^(%s)' % fb_settings.MEDIA_URL)
     value = mediaurl_re.sub('', value)
     return value
 
@@ -47,7 +44,7 @@ def path_to_url(value):
     Return an URL relative to MEDIA_ROOT.
     """
 
-    mediaroot_re = re.compile(r'^(%s)' % (fb_settings.MEDIA_ROOT))
+    mediaroot_re = re.compile(r'^(%s)' % fb_settings.MEDIA_ROOT)
     value = mediaroot_re.sub('', value)
     return url_join(fb_settings.MEDIA_URL, value)
 
@@ -59,9 +56,9 @@ def dir_from_url(value):
     an URL relative to MEDIA_URL.
     """
 
-    mediaurl_re = re.compile(r'^(%s)' % (fb_settings.MEDIA_URL))
+    mediaurl_re = re.compile(r'^(%s)' % fb_settings.MEDIA_URL)
     value = mediaurl_re.sub('', value)
-    directory_re = re.compile(r'^(%s)' % (fb_settings.DIRECTORY))
+    directory_re = re.compile(r'^(%s)' % fb_settings.DIRECTORY)
     value = directory_re.sub('', value)
     return os.path.split(value)[0]
 
@@ -120,7 +117,7 @@ def sort_by_attr(seq, attr):
     # (seq[i].attr, i, seq[i]) and sort it. The second item of tuple is needed not
     # only to provide stable sorting, but mainly to eliminate comparison of objects
     # (which can be expensive or prohibited) in case of equal attribute values.
-    intermed = map(None, map(getattr, seq, (attr,)*len(seq)), xrange(len(seq)), seq)
+    intermed = map(None, map(getattr, seq, (attr,) * len(seq)), xrange(len(seq)), seq)
     intermed.sort()
     return map(operator.getitem, intermed, (-1,) * len(intermed))
 
@@ -182,20 +179,28 @@ def get_breadcrumbs(query, path):
     return breadcrumbs
 
 
-def get_filterdate(filterDate, dateTime):
+def get_filterdate(filter_date, date_time):
     """
     Get filterdate.
     """
 
     returnvalue = ''
-    dateYear = strftime("%Y", gmtime(dateTime))
-    dateMonth = strftime("%m", gmtime(dateTime))
-    dateDay = strftime("%d", gmtime(dateTime))
-    if filterDate == 'today' and int(dateYear) == int(localtime()[0]) and int(dateMonth) == int(localtime()[1]) and int(dateDay) == int(localtime()[2]): returnvalue = 'true'
-    elif filterDate == 'thismonth' and dateTime >= time()-2592000: returnvalue = 'true'
-    elif filterDate == 'thisyear' and int(dateYear) == int(localtime()[0]): returnvalue = 'true'
-    elif filterDate == 'past7days' and dateTime >= time()-604800: returnvalue = 'true'
-    elif filterDate == '': returnvalue = 'true'
+    date_year = strftime("%Y", gmtime(date_time))
+    date_month = strftime("%m", gmtime(date_time))
+    date_day = strftime("%d", gmtime(date_time))
+    if (filter_date == 'today' and
+        int(date_year) == int(localtime()[0]) and
+        int(date_month) == int(localtime()[1]) and
+            int(date_day) == int(localtime()[2])):
+        returnvalue = 'true'
+    elif filter_date == 'thismonth' and date_time >= time() - 2592000:
+        returnvalue = 'true'
+    elif filter_date == 'thisyear' and int(date_year) == int(localtime()[0]):
+        returnvalue = 'true'
+    elif filter_date == 'past7days' and date_time >= time() - 604800:
+        returnvalue = 'true'
+    elif filter_date == '':
+        returnvalue = 'true'
     return returnvalue
 
 
@@ -310,29 +315,29 @@ def scale_and_crop(im, width, height, opts):
     Scale and Crop.
     """
 
-    x, y   = [float(v) for v in im.size]
+    x, y = [float(v) for v in im.size]
     if width:
         xr = float(width)
     else:
-        xr = float(x*height/y)
+        xr = float(x * height / y)
     if height:
         yr = float(height)
     else:
-        yr = float(y*width/x)
+        yr = float(y * width / x)
 
     if 'crop' in opts:
-        r = max(xr/x, yr/y)
+        r = max(xr / x, yr / y)
     else:
-        r = min(xr/x, yr/y)
+        r = min(xr / x, yr / y)
 
     if r < 1.0 or (r > 1.0 and 'upscale' in opts):
-        im = im.resize((int(x*r), int(y*r)), resample=Image.ANTIALIAS)
+        im = im.resize((int(x * r), int(y * r)), resample=Image.ANTIALIAS)
 
     if 'crop' in opts:
-        x, y   = [float(v) for v in im.size]
-        ex, ey = (x-min(x, xr))/2, (y-min(y, yr))/2
+        x, y = [float(v) for v in im.size]
+        ex, ey = (x - min(x, xr)) / 2, (y - min(y, yr)) / 2
         if ex or ey:
-            im = im.crop((int(ex), int(ey), int(x-ex), int(y-ey)))
+            im = im.crop((int(ex), int(ey), int(x - ex), int(y - ey)))
     return im
 
     # if 'crop' in opts:
