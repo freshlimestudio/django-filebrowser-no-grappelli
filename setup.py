@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='djlime-filebrowser',
-    version='0.2',
+    version='0.3',
     description='Media-Management with the Django Admin-Interface.',
     author='Patrick Kranzlmueller, Andrey Butenko, Andrey Voronov',
     author_email='voronov84+github@gmail.com',
